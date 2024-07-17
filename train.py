@@ -90,7 +90,7 @@ def train_model(args, model, train_loader, val_loader,
 
   ### Clark's Code: allow for intermediate saving of weights
   num_division = 5
-  intermediate_save_points = [epochs / num_division * i for i in range(1,num_division + 1)]
+  intermediate_save_points = [int(epochs / num_division * i) for i in range(1,num_division + 1)]
 
   for epoch in range(start_epoch, epochs):
     adjust_learning_rate(optimizer, epoch, args)
@@ -107,6 +107,7 @@ def train_model(args, model, train_loader, val_loader,
     logging.info('%03d: Acc-tr: %6.2f, Acc-val: %6.2f, L-tr: %6.4f, L-val: %6.4f',
                  epoch, tr_prec1, val_prec1, tr_loss, val_loss)
 
+    ### Clark's Code: Saves models weights
     if epoch in intermediate_save_points:
       prefix = str(int(epoch))
       torch.save(model.state_dict(), f'./ModelWeights_{prefix}Epochs.pth')
